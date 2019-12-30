@@ -34,5 +34,4 @@ public class Signup extends AbstractPersistable<Long> {
     public void setAddress(String address) {
         this.address = address;
     }
-
 }
