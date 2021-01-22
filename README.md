@@ -1,34 +1,37 @@
 # Cyber Security Base – Course Project I (F-Secure Cyber Security Base MOOC)
-Project can be found here: https://github.com/roklem314/cybersecuritybase-project. 
-Clone the project to your own local machine. Project use Starter Code from here https://github.com/cybersecuritybase/cybersecuritybase-project. 
-Following flaws can be reviewed and reproduced by running application on port 8080.
+The project can be found here: https://github.com/roklem314/cybersecuritybase-project. 
+In the beginning, clone the project to your local machine. 
+This project uses "Starter Code" from here https://github.com/cybersecuritybase/cybersecuritybase-project, which is needed for course completion. 
+
+Next, this document describes how the following flaws can be reviewed and reproduced by running the application locally.
 
 FLAW 1: Insufficient Loggin & Monitoring
 
-Any of application auditable events, like login or failed logins haven’t been logged to file. This makes application monitoring impossible and there is no way to know if the site has been hacked. Other non-intentional problems caused by bugs and misconfigurations are missed easily.
+Any of the application auditable events, like successful or failed logins, have not been logged. This kind of behavior makes application monitoring and auditing very hard because there is no way to know if the site has been hacked and which are the most recent events if the attack/breach is noticed. Other non-intentional problems caused by bugs and misconfigurations are missed, and application debugging is almost impossible.
 
-Steps to reproduce problem:
-1. When application is running there is no any logging system that write logs to file
+Steps to reproduce the problem:
+1. When the application is running, its completion, failures, or other events can not be later recovered from logs.
 
-How to Fix it: Spring Boot gives option to write log files in addition to the console output, you need to set a logging.file.name or logging.file.path property (for example, in your application.properties). Also logging systems can have the logger levels set in the Spring Environment (for example, in application.properties) by using logging.level.<logger-name>=<level> where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. Here can be seen more of info: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+How to Fix it: Spring Boot gives the option to write log files in addition to the console output. There is an option to set a logging.file.name or logging.file.path property (for example, in your application.properties). Also logging systems can have the logger levels set in the Spring Environment (for example, in application.properties) by using logging.level.<logger-name>=<level> where the level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. 
+Here is good examples of how this can be done: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 
 __________________________________________________
 
 
 FLAW 2: Sensitive Data Exposure 
 
-If attacker re-enter person’s name on event registration (form.html) it will show address of user if that person has already registered.
+If the attacker re-enters a person's name on the event registration form on (form.html) it will show this person's address if that person has already registered.
 
 Steps to reproduce problem:
-1. Open browser and go to: http://localhost:8080
-3. Sign in with username "ted" and password "ted" and then click Login button
-4. In the "form" page type in "ted" as name and "address" as address and press submit
-5. a message says "user has been signed up to the event" and thats indicating user has signed up to the event
-6. go back to http://localhost:8080/form
-7. insert "ted" as name and click button submit
-8. Ted’s address will be shown on the message
+1. Open the browser and go to http://localhost:XXXX, where XXXX is, for example, 8080(this depends on your local settings, but 8080 is the default).
+3. Sign-in with username "ted" and password "ted" and then click the Login button.
+4. In the "form" page, type in "ted" as name and "address" as address and press submit.
+5. The message says, "user has been signed up to the event," and this indicating that the user has signed up to the event.
+6. Then go back to address http://localhost:8080/form .
+7. Insert "ted" as name and click the button submit
+8. Ted's address will be shown on the message
 
-How to Fix it: SignupController.java class beginning there is methods defaultMapping() and loadForm(). These methods must be added "httpSession.invalidate();" to prevent this problem.
+How to Fix it: On the SignupController.java class beginning, there are two methods such as defaultMapping() and loadForm(). These methods must be added "HTTP session.invalidate();" to prevent this problem.
 
 __________________________________________________
 
